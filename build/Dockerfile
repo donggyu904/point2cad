@@ -48,7 +48,7 @@ RUN cd ${ROOT_PYMESH} && \
 WORKDIR ${ROOT_PROJECT}
 COPY requirements.txt ${ROOT_PROJECT}
 RUN cd ${ROOT_PROJECT} && \
-    pip3 install -r requirements.txt
+    pip install -r requirements.txt
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
