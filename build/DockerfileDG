@@ -22,7 +22,7 @@ RUN apt-get -y update --fix-missing && \
     apt-get clean
 
 RUN conda install python=3.7 && \
-    pip3 install --upgrade pip
+    pip install --upgrade pip
 
 
 ENV ROOT_PROJECT=/work
@@ -38,17 +38,18 @@ RUN cd ${ROOT_PYMESH} && \
     git checkout 384ba882 && \
     git submodule update --init && \
     sed -i '43s|cwd="/root/PyMesh/docker/patches"|cwd="'${ROOT_PYMESH}'/docker/patches"|' ${ROOT_PYMESH}/docker/patches/patch_wheel.py && \
-    pip3 install -r ${ROOT_PYMESH}/python/requirements.txt && \
-    ./setup.py bdist_wheel && \
+    pip install -r ${ROOT_PYMESH}/python/requirements.txt && \
+    ./setup.py build && \
+    ./setup.py install && \
     rm -rf build_3.7 third_party/build && \
     python ${ROOT_PYMESH}/docker/patches/patch_wheel.py dist/pymesh2*.whl && \
-    pip3 install dist/pymesh2*.whl && \
+    pip install dist/pymesh2*.whl && \
     python -c "import pymesh; pymesh.test()"
 
 WORKDIR ${ROOT_PROJECT}
 COPY requirements.txt ${ROOT_PROJECT}
 RUN cd ${ROOT_PROJECT} && \
-    pip3 install -r requirements.txt
+    pip install -r requirements.txt
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

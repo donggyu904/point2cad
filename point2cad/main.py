@@ -43,7 +43,7 @@ if __name__ == "__main__":
     color_list = make_colormap_optimal()
 
     parser = argparse.ArgumentParser(description="Point2CAD pipeline")
-    parser.add_argument("--path_in", type=str, default="./assets/abc_00949.xyzc")
+    parser.add_argument("--path_in", type=str, default="./assets/abc_00470.xyzc")
     parser.add_argument("--path_out", type=str, default="./out")
     parser.add_argument("--validate_checkpoint_path", type=str, default=None)
     parser.add_argument("--silent", default=True)
