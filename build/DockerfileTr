@@ -2,7 +2,6 @@ FROM nvcr.io/nvidia/pytorch:21.05-py3
 
 RUN apt-get -y update --fix-missing && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    build-essential \
     gosu \
     gcc \
     g++ \
@@ -22,8 +21,7 @@ RUN apt-get -y update --fix-missing && \
     apt-get clean
 
 RUN conda install python=3.7 && \
-    pip install --upgrade pip
-
+    pip3 install --upgrade pip
 
 ENV ROOT_PROJECT=/work
 ENV ROOT_PYMESH ${ROOT_PROJECT}/PyMesh
@@ -38,12 +36,12 @@ RUN cd ${ROOT_PYMESH} && \
     git checkout 384ba882 && \
     git submodule update --init && \
     sed -i '43s|cwd="/root/PyMesh/docker/patches"|cwd="'${ROOT_PYMESH}'/docker/patches"|' ${ROOT_PYMESH}/docker/patches/patch_wheel.py && \
-    pip install -r ${ROOT_PYMESH}/python/requirements.txt && \
-    sed -i '1s|num_cores = min(num_cores, int(os.environ.get("NUM_CORES", num_cores)))|num_cores = 1|' ${ROOT_PYMESH}/setup.py&& \
+    pip3 install -r ${ROOT_PYMESH}/python/requirements.txt && \
+    sed -i 's|num_cores = min(num_cores, int(os.environ.get("NUM_CORES", num_cores)))|num_cores = 1|' setup.py &&\
     ./setup.py bdist_wheel && \
     rm -rf build_3.7 third_party/build && \
     python ${ROOT_PYMESH}/docker/patches/patch_wheel.py dist/pymesh2*.whl && \
-    pip install dist/pymesh2*.whl && \
+    pip3 install dist/pymesh2*.whl && \
     python -c "import pymesh; pymesh.test()"
 
 WORKDIR ${ROOT_PROJECT}
