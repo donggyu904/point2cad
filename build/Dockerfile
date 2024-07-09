@@ -43,6 +43,7 @@ RUN cd ${ROOT_PYMESH} && \
     git submodule update --init && \
     sed -i '43s|cwd="/root/PyMesh/docker/patches"|cwd="'${ROOT_PYMESH}'/docker/patches"|' ${ROOT_PYMESH}/docker/patches/patch_wheel.py && \
     pip3 install -r ${ROOT_PYMESH}/python/requirements.txt && \
+    sed -i 's|num_cores = min(num_cores, int(os.environ.get("NUM_CORES", num_cores)))|num_cores = 1|' setup.py &&\
     ./setup.py bdist_wheel && \
     rm -rf build_3.7 third_party/build && \
     python ${ROOT_PYMESH}/docker/patches/patch_wheel.py dist/pymesh2*.whl && \

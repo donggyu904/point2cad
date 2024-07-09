@@ -49,8 +49,8 @@ COPY requirements.txt ${ROOT_PROJECT}
 RUN cd ${ROOT_PROJECT} && \
     pip install -r requirements.txt
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+COPY entrypointTr.sh /entrypointTr.sh
+RUN chmod +x /entrypointTr.sh
+ENTRYPOINT ["/entrypointTr.sh"]
 
 WORKDIR ${ROOT_POINT2CAD}
